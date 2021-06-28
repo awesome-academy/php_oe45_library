@@ -56,4 +56,11 @@ return [
     'input_email_of_user' => 'Input email of user',
     'password' => 'Password',
     'edit_user' => 'Edit user',
+    'author' => [
+        'add_success' => 'Added !',
+        'update_success' => 'Updated !',
+        'del_success' => 'Deleted !',
+    ],
+    'whoop' => 'Whoops!',
+    'wronginput' => 'There were some problems with your input.',
 ];

@@ -56,4 +56,11 @@ return [
     'input_email_of_user' => 'Nhập email người dùng',
     'password' => 'Mật khẩu',
     'edit_user' => 'Chỉnh sửa thông tin người dùng',
+    'author' => [
+        'add_success' => 'Thêm  thành công !',
+        'update_success' => 'Cập nhật  thành công !',
+        'del_success' => 'Xóa  thành công !',
+    ],
+    'whoop' => 'Lỗi!',
+    'wronginput' => 'Có một vài vấn đề với đầu vào của bạn.',
 ];

@@ -6,6 +6,17 @@
 
 @section('content')
 <div class="content-wrapper">
+    
+    @if ($errors->any())
+    <div class="alert alert-danger">
+        <strong>{{ trans('message.whoop') }}</strong> {{ trans('message.wronginput') }}<br><br>
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
 
     <div class="content">
         <div class="container-fluid">
@@ -16,17 +27,18 @@
                             <h3 class="card-title">{{ trans('message.edit_publisher') }}</h3>
                         </div>
 
-                        <form method="POST" action="">
+                        <form action="{{ route('publishers.update', $publisher->pub_id) }}" method="POST" enctype="multipart/form-data">
                             @csrf
+                            @method('PUT')
                             <div class="card-body">
                                 <div class="form-group">
                                     <label>{{ trans('message.name') }}</label>
-                                    <input type="text" class="form-control" name="name" value="">
+                                    <input type="text" class="form-control" name="pub_name" value="{{ $publisher->pub_name }}">
                                 </div>
 
                                 <div class="form-group">
                                     <label>{{ trans('message.description') }}</label>
-                                    <textarea class="form-control" rows="3"></textarea>
+                                    <textarea class="form-control" name="pub_desc" rows="3">{{ $publisher->pub_desc }}</textarea>
                                 </div>
                             </div>
 
