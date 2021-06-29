@@ -6,13 +6,14 @@
 <meta name="keywords" content="Visitors Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template, 
 Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
 <!-- bootstrap-css -->
-<link rel="stylesheet" href="{{asset('css/bootstrap.min.css')}}" >
+<link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}" >
 <!-- //bootstrap-css -->
 <!-- Custom CSS -->
-<link href="{{asset('css/style.css')}}" rel='stylesheet' type='text/css' />
-<link href="{{asset('css/style-responsive.css')}}" rel="stylesheet"/>
-<link rel="stylesheet" href="{{asset('css/morris.css')}}" type="text/css"/>
+<link href="{{ asset('css/style.css') }}" rel='stylesheet' type='text/css' />
+<link href="{{ asset('css/style-responsive.css') }}" rel="stylesheet"/>
+<link rel="stylesheet" href="{{ asset('css/morris.css') }}" type="text/css"/>
 <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+<link href="{{ asset('css/jsgrid.css') }}" rel="stylesheet">
 
 <script src="{{ asset('js/app.js') }}" defer></script>
 <script src="{{ mix('js/jquery2.0.3.min.js') }}"></script>
@@ -117,7 +118,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                     </a>
                 </li>
                 <li class="sub-menu">
-                    <a href="#">
+                    <a href="{{ route('publishers.index') }}" class="nav-link">
                         <span>{{ trans('message.publishers') }}</span>
                     </a>
                 </li>
@@ -147,13 +148,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 	<section class="wrapper">
        @yield('content')
     </section>
- <!-- footer -->
-		  <div class="footer">
-			<div class="wthree-copyright">
-			  <p>{{ trans('message.welcomeadmin') }}</a></p>
-			</div>
-		  </div>
-  <!-- / footer -->
 </section>
 <!--main content end-->
 </section>
