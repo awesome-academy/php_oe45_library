@@ -113,7 +113,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                     </a>
                 </li>
                 <li class="sub-menu">
-                    <a href="#">
+                    <a href="{{ route('authors.index') }}">
                         <span>{{ trans('message.authors') }}</span>
                     </a>
                 </li>

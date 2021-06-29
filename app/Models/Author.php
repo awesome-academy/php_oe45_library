@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Book;
 use App\Models\Authorfollow;
 
-class Borrow extends Model
+class Author extends Model
 {
     use HasFactory;
     use SoftDeletes;
