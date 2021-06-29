@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Publisher;
-use App\Http\Requests\PublisherRequest;
+use App\Models\Author;
+use App\Http\Requests\AuthorRequest;
 
-class PublisherController extends Controller
+class AuthorController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,9 +15,9 @@ class PublisherController extends Controller
      */
     public function index()
     {
-        $publishers = Publisher::latest()->paginate(config('app.paginate'));
+        $authors = Author::latest()->paginate(config('app.paginate'));
 
-        return view('admin.publishers.index', compact('publishers'));
+        return view('admin.authors.index', compact('authors'));
     }
 
     /**
@@ -27,7 +27,7 @@ class PublisherController extends Controller
      */
     public function create()
     {
-        return view('admin.publishers.add');
+        return view('admin.authors.add');
     }
 
     /**
@@ -36,11 +36,11 @@ class PublisherController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(PublisherRequest $request)
+    public function store(AuthorRequest $request)
     {
-        Publisher::create($request->all());
+        Author::create($request->all());
 
-        return redirect()->route('publishers.index')->with('add_success', trans('message.add_success'));;
+        return redirect()->route('authors.index')->with('add_success', trans('message.add_success'));;
     }
 
     /**
@@ -49,9 +49,9 @@ class PublisherController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Publisher $publisher)
+    public function edit(Author $author)
     {
-        return view('admin.publishers.edit', compact('publisher'));
+        return view('admin.authors.edit', compact('author'));
     }
 
     /**
@@ -61,11 +61,11 @@ class PublisherController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(PublisherRequest $request, Publisher $publisher)
+    public function update(AuthorRequest $request, Author $author)
     {
-        $publisher->update($request->all());
+        $author->update($request->all());
 
-        return redirect()->route('publishers.index')->with('update_success', trans('message.update_success'));
+        return redirect()->route('authors.index')->with('update_success', trans('message.update_success'));
     }
 
     /**
@@ -74,10 +74,10 @@ class PublisherController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Publisher $publisher)
+    public function destroy(Author $author)
     {
-        $publisher->delete();
+        $author->delete();
 
-        return redirect()->route('publishers.index')->with('del_success', trans('message.del_success'));
+        return redirect()->route('authors.index')->with('del_success', trans('message.del_success'));
     }
 }
