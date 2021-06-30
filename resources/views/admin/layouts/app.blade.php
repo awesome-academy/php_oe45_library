@@ -103,32 +103,38 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         <div class="leftside-navigation">
             <ul class="sidebar-menu" id="nav-accordion">                
                 <li class="sub-menu">
-                    <a href="#">
+                    <a href="{{ route('categories.index') }}">
+                        <i class="fas fa-align-center"></i>
                         <span>{{ trans('message.categories') }}</span>
                     </a>
                 </li>
 				<li class="sub-menu">
                     <a href="#">
+                        <i class="fa fa-book"></i>
                         <span>{{ trans('message.books') }}</span>
                     </a>
                 </li>
                 <li class="sub-menu">
                     <a href="{{ route('authors.index') }}">
+                        <i class="fas fa-pen-nib"></i>
                         <span>{{ trans('message.authors') }}</span>
                     </a>
                 </li>
                 <li class="sub-menu">
                     <a href="{{ route('publishers.index') }}" class="nav-link">
+                        <i class="fas fa-building"></i>
                         <span>{{ trans('message.publishers') }}</span>
                     </a>
                 </li>
                 <li class="sub-menu">
                     <a href="#">
+                        <i class="fas fa-user"></i>
                         <span>{{ trans('message.users') }}</span>
                     </a>
                 </li>
 				<li class="sub-menu">
                     <a href="javascript:;">
+                        <i class="fas fa-question"></i>
                         <span>{{ trans('message.borrows_management') }}</span>
                     </a>
                     <ul class="sub">
