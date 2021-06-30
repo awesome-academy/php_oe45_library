@@ -25,4 +25,9 @@ class HomeController extends Controller
     {
         return view('admin.layouts.app');
     }
+
+    public function indexUser()
+    {
+        return view('user.layouts.app');
+    }
 }

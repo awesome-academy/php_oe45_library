@@ -61,4 +61,5 @@ return [
     'del_success' => 'Deleted !',
     'whoop' => 'Whoops!',
     'wronginput' => 'There were some problems with your input.',
+    'user' => 'User',
 ];
