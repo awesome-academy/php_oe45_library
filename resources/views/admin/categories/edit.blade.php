@@ -6,6 +6,18 @@
 
 @section('content')
 <div class="content-wrapper">
+
+    @if ($errors->any())
+    <div class="alert alert-danger">
+        <strong>{{ trans('message.whoop') }}</strong> {{ trans('message.wronginput') }}<br><br>
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
+    
     <div class="content">
         <div class="container-fluid">
             <div class="row justify-content-center">
@@ -15,18 +27,25 @@
                             <h3 class="card-title">{{ trans('message.edit_category') }}</h3>
                         </div>
 
-                        <form method="POST" action="">
+                        <form action="{{ route('categories.update', $category->cate_id) }}" method="POST" enctype="multipart/form-data">
                             @csrf
+                            @method('PUT')
                             <div class="card-body">
                                 <div class="form-group">
                                     <label>{{ trans('message.name') }}</label>
-                                    <input type="text" class="form-control" name="name">
+                                    <input type="text" class="form-control" name="cate_name" value="{{ $category->cate_name }}">
+                                </div>
+
+                                <div class="form-group">
+                                    <label>{{ trans('message.description') }}</label>
+                                    <textarea class="form-control" rows="3" name="cate_desc">{{ $category->cate_desc }}</textarea>
                                 </div>
 
                                 <div class="form-group">
                                     <label>{{ trans('message.parent_category') }}</label>
-                                    <select class="form-control select2">
+                                    <select class="form-control select2" name="parent_id">
                                         <option selected="selected"></option>
+                                        {!! $htmlOption !!}
                                     </select>
                                 </div>
                             </div>
