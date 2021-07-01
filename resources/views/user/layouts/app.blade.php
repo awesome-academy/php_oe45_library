@@ -52,8 +52,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                     {{ trans('message.language') }}
                                 </button>
                                 <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="">{{ trans('message.english') }}</a>
-                                    <a class="dropdown-item" href="">{{ trans('message.vietnamese') }}</a>
+                                    <a class="dropdown-item" href="{{ route('lang', ['lang' => 'en']) }}">{{ trans('message.english') }}</a>
+                                    <a class="dropdown-item" href="{{ route('lang', ['lang' => 'vi']) }}">{{ trans('message.vietnamese') }}</a>
                                 </div>
                             </div>
                         </div>
