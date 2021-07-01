@@ -53,7 +53,7 @@ class CategoriesSeeder extends Seeder
                 'parent_id' => 7,
             ],
         ];
-        foreach($categories as $cat) {
+        foreach ($categories as $cat) {
             Category::create($cat);
         }
     }

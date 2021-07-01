@@ -17,14 +17,12 @@ class IsAdmin
      */
     public function handle(Request $request, Closure $next)
     {
-        if(Auth::check()) {
-            if(Auth::user()->role_id == config('app.role'))
-                {
-                    return $next($request);
-                } else {
-
-                    return redirect()->back();
-                }      
+        if (Auth::check()) {
+            if (Auth::user()->role_id == config('app.role')) {
+                return $next($request);
+            } else {
+                return redirect()->back();
+            }
         } else {
             return redirect('/login');
         }

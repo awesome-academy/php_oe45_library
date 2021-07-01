@@ -30,5 +30,4 @@ class Author extends Model
     {
         return $this->hasMany(Authorfollow::class, 'author_id');
     }
-
 }

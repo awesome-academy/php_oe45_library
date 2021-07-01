@@ -40,7 +40,7 @@ class AuthorController extends Controller
     {
         Author::create($request->all());
 
-        return redirect()->route('authors.index')->with('add_success', trans('message.add_success'));;
+        return redirect()->route('authors.index')->with('add_success', trans('message.add_success'));
     }
 
     /**

@@ -5,6 +5,8 @@ use App\Http\Controllers\PublisherController;
 use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\LanguageController;
+use App\Http\Controllers\BookController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -24,13 +26,14 @@ Route::get('lang/{lang}', [LanguageController::class, 'changeLanguage'])->name('
 
 Auth::routes();
 
-Route::group(['prefix' => 'admin', 'middleware' => ['is_admin', 'locale']], function(){
+Route::group(['prefix' => 'admin', 'middleware' => 'is_admin'], function () {
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     Route::resource('publishers', PublisherController::class);
     Route::resource('authors', AuthorController::class);
-    Route::resource('categories', CategoryController::class);    
+    Route::resource('categories', CategoryController::class);
+    Route::resource('books', BookController::class);
 });
 
-Route::group(['middleware' => 'locale'], function(){
+Route::group([['middleware' => 'locale']], function () {
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'indexUser'])->name('home');
 });

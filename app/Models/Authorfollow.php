@@ -20,12 +20,12 @@ class Authorfollow extends Model
         'author_id',
     ];
 
-    public function user() 
+    public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function author() 
+    public function author()
     {
         return $this->belongsTo(Author::class, 'author_id');
     }
