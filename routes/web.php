@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PublisherController;
 use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\CategoryController;
-
+use App\Http\Controllers\LanguageController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -20,15 +20,17 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('lang/{lang}', [LanguageController::class, 'changeLanguage'])->name('lang');
+
 Auth::routes();
 
-Route::group(['prefix' => 'admin', 'middleware' => 'is_admin'], function(){
+Route::group(['prefix' => 'admin', 'middleware' => ['is_admin', 'locale']], function(){
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     Route::resource('publishers', PublisherController::class);
     Route::resource('authors', AuthorController::class);
     Route::resource('categories', CategoryController::class);    
 });
 
-Route::group([], function(){
+Route::group(['middleware' => 'locale'], function(){
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'indexUser'])->name('home');
 });

@@ -3,7 +3,7 @@
 return [
     'dashboard' => 'Bảng điều khiển',
     'welcomeadmin' => 'Chào mừng đến với trang quản trị',
-    'admin' => 'Quản trị viên',
+    'admin' => 'Quản trị',
     'search' => 'Tìm kiếm',
     'language' => 'Ngôn ngữ',
     'english' => 'Tiếng Anh',
