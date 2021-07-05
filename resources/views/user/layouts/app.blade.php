@@ -28,7 +28,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <!--logo start-->
 <div class="brand">
     <a href="#" class="logo">
-        {{ trans('message.user') }}
+        {{ trans('message.category') }}
     </a>
     <div class="sidebar-toggle-box">
         <div class="fa fa-bars"></div>
@@ -36,12 +36,14 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 </div>
 
 <div id="app">
-    <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm nav pull-right top-menu">
+    <nav class="navbar navbar-expand-md navbar-light bg-light shadow-sm nav pull-left top-menu ml-5">
+        <h1 class="text-body">{{ trans('user.name') }}</h1>
+    </nav>
+    <nav class="navbar navbar-expand-md navbar-light bg-light shadow-sm nav pull-right top-menu">
         <div class="container">
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                 <span class="navbar-toggler-icon"></span>
             </button>
-
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <!-- Right Side Of Navbar -->
                 <ul class="navbar-nav ml-auto">
@@ -152,6 +154,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <!--main content start-->
 <section id="main-content">
 	<section class="wrapper">
+       @include('user.common.navbar')
        @yield('content')
     </section>
 </section>
