@@ -26,7 +26,6 @@
             saveState: true,
             disableLink: true,
             showCount: false,
-            //			cookie	: 'dcjq-accordion'
         };
 
         //call in the default otions
@@ -35,9 +34,6 @@
         this.each(function (options) {
             var obj = this;
             setUpAccordion();
-            //			if(defaults.saveState == true){
-            //				checkCookie(defaults.cookie, obj);
-            //			}
             if (defaults.autoExpand == true) {
                 $("li." + defaults.classExpand + " > a").addClass(
                     defaults.classActive
@@ -102,7 +98,8 @@
             }
 
             // Set up accordion
-            function setUpAccordion() {
+            function setUpAccordion()
+            {
                 $arrow = '<span class="' + defaults.classArrow + '"></span>';
                 var classParentLi = defaults.classParent + "-li";
                 $("> ul", obj).show();
@@ -138,7 +135,8 @@
                 }
             }
 
-            function linkOver() {
+            function linkOver()
+            {
                 $activeLi = $(this).parent("li");
                 $parentsLi = $activeLi.parents("li");
                 $parentsUl = $activeLi.parents("ul");
@@ -162,11 +160,14 @@
                 }
             }
 
-            function linkOut() {}
+            function linkOut()
+            {}
 
-            function menuOver() {}
+            function menuOver()
+            {}
 
-            function menuOut() {
+            function menuOut()
+            {
                 if (defaults.menuClose == true) {
                     $("ul", obj).slideUp(defaults.speed);
                     // Reset active links
@@ -176,14 +177,16 @@
             }
 
             // Auto-Close Open Menu Items
-            function autoCloseAccordion($parentsLi, $parentsUl) {
+            function autoCloseAccordion($parentsLi, $parentsUl)
+            {
                 $("ul", obj).not($parentsUl).slideUp(defaults.speed);
                 // Reset active links
                 $("a", obj).removeClass(defaults.classActive);
                 $("> a", $parentsLi).addClass(defaults.classActive);
             }
             // Reset accordion using active links
-            function resetAccordion() {
+            function resetAccordion()
+            {
                 $("ul", obj).hide();
                 $allActiveLi = $("a." + defaults.classActive, obj);
                 $allActiveLi.siblings("ul").show();

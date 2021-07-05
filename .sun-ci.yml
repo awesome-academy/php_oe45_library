@@ -41,7 +41,7 @@ jobs:
       - composer global require "squizlabs/php_codesniffer=*"
       - composer install
     script:
-      - ~/.composer/vendor/bin/phpcs --ignore=vendor,bootstrap/cache/,storage --standard=PSR2,PSR1 ./
+      - ~/.composer/vendor/bin/phpcs --ignore=vendor,bootstrap/cache/,storage,database/migrations,coverage,/js,public --standard=PSR2,PSR1 ./
   - name: test:phpunit
     stage: test
     image: sunasteriskrnd/php-workspace:7.4

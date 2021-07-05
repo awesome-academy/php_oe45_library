@@ -109,7 +109,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                     </a>
                 </li>
 				<li class="sub-menu">
-                    <a href="#">
+                    <a href="{{ route('books.index') }}">
                         <i class="fa fa-book"></i>
                         <span>{{ trans('message.books') }}</span>
                     </a>

@@ -34,7 +34,8 @@ class CategoryController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function getCategory($parentID){
+    public function getCategory($parentID)
+    {
         $data = $this->category->all();
         $recusive = new Recusive($data);
         $htmlOption = $recusive->categoryRecusive($parentID);
@@ -59,7 +60,7 @@ class CategoryController extends Controller
     {
         Category::create($request->all());
 
-        return redirect()->route('categories.index')->with('add_success', trans('message.add_success'));;
+        return redirect()->route('categories.index')->with('add_success', trans('message.add_success'));
     }
 
     /**

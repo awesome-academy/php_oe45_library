@@ -15,7 +15,7 @@ use App\Models\Review;
 
 class User extends Authenticatable
 {
-    use HasFactory; 
+    use HasFactory;
     use Notifiable;
     use SoftDeletes;
 
@@ -52,27 +52,27 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function authorfollows() 
+    public function authorfollows()
     {
         return $this->hasMany(Authorfollow::class, 'user_id');
     }
 
-    public function bookfollows() 
+    public function bookfollows()
     {
         return $this->hasMany(Bookfollow::class, 'book_id');
     }
 
-    public function borrows() 
+    public function borrows()
     {
         return $this->hasMany(Borrow::class, 'user_id');
     }
 
-    public function likes() 
+    public function likes()
     {
         return $this->hasMany(Like::class, 'user_id');
     }
 
-    public function reviews() 
+    public function reviews()
     {
         return $this->hasMany(Review::class, 'user_id');
     }

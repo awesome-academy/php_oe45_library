@@ -40,7 +40,7 @@ class PublisherController extends Controller
     {
         Publisher::create($request->all());
 
-        return redirect()->route('publishers.index')->with('add_success', trans('message.add_success'));;
+        return redirect()->route('publishers.index')->with('add_success', trans('message.add_success'));
     }
 
     /**

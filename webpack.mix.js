@@ -19,5 +19,6 @@ mix.js("resources/js/app.js", "public/js")
     .js("resources/js/morris.js", "public/js")
     .js("resources/js/raphael-min.js", "public/js")
     .js("resources/js/scripts.js", "public/js")
+    .postCss("resources/css/app.css", "public/css")
     .sass("resources/sass/app.scss", "public/css")
     .sourceMaps();
