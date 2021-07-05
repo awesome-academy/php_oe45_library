@@ -27,7 +27,7 @@ Route::get('lang/{lang}', [LanguageController::class, 'changeLanguage'])->name('
 
 Auth::routes();
 
-Route::group(['prefix' => 'admin', 'middleware' => 'is_admin'], function () {
+Route::group(['prefix' => 'admin', 'middleware' => ['locale', 'is_admin']], function () {
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     Route::resource('publishers', PublisherController::class);
     Route::resource('authors', AuthorController::class);
@@ -35,8 +35,9 @@ Route::group(['prefix' => 'admin', 'middleware' => 'is_admin'], function () {
     Route::resource('books', BookController::class);
 });
 
-Route::group([['middleware' => 'locale']], function () {
+Route::group(['middleware' => 'locale'], function () {
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'indexUser'])->name('home');
     Route::get('all-books', [UserBooksController::class, 'index'])->name('user.books');
     Route::get('all-books/{book_id}', [UserBooksController::class, 'detail'])->name('user.bookdetail');
+    Route::get('book-category/{id}', [UserBooksController::class, 'indexBookCategory'])->name('show_bookcategory');
 });
