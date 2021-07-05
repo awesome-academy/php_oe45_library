@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\UserBooksController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,4 +37,6 @@ Route::group(['prefix' => 'admin', 'middleware' => 'is_admin'], function () {
 
 Route::group([['middleware' => 'locale']], function () {
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'indexUser'])->name('home');
+    Route::get('all-books', [UserBooksController::class, 'index'])->name('user.books');
+    Route::get('all-books/{book_id}', [UserBooksController::class, 'detail'])->name('user.bookdetail');
 });
