@@ -16,4 +16,17 @@ return [
         'quantity' => 'Quantity',
         'nobook' => 'Clean Out!',
     ],
+    'request' => [
+        'create' => 'Create borrow request',
+        'borrowdate' => 'Borrow date',
+        'returndate' => 'Return date',
+        'add' => 'Create request',
+        'errordayrule' => 'Error rule of day',
+        'all' => 'Your Requests',
+        'status' => 'Status',
+        'nonapproved' => 'Unapproved',
+        'approved' => 'Approved',
+        'rejected' => 'Rejected',
+        'create_success' => 'Created Successfully!',
+    ],
 ];
