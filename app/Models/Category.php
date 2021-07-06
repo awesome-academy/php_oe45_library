@@ -26,13 +26,13 @@ class Category extends Model
         return $this->hasMany(Book::class, 'cate_id');
     }
 
-    public function children()
+    public function subCategories()
     {
         return $this->hasMany(Category::class, 'parent_id');
     }
     
-    public function parent()
+    public function parentCategory()
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsTo(Category::class, 'parent_id');
     }
 }

@@ -14,5 +14,6 @@ return [
         'author' => 'Tên Tác giả',
         'publisher' => 'Tên Nhà xuất bản',
         'quantity' => 'Số lượng',
+        'nobook' => 'Đã hết sách!',
     ],
 ];

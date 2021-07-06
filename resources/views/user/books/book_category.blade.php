@@ -2,7 +2,9 @@
 
 @section('content')  
     <div class="container main mt-5">
-        <h2>{{ trans('user.books.allbooks') }}</h2>
+        @foreach($category_name as $catename)
+            <h1>{{ $catename->cate_name }}</h1>
+        @endforeach
         <div class="row">
             @foreach($books as $book)
                 <div class="col-lg-4 mb-5">
@@ -25,4 +27,3 @@
         {{$books->links()}}
     </div>
 @endsection
- 

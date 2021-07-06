@@ -14,5 +14,6 @@ return [
         'author' => 'Author Name',
         'publisher' => 'Publisher Name',
         'quantity' => 'Quantity',
+        'nobook' => 'Clean Out!',
     ],
 ];
