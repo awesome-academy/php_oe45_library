@@ -8,6 +8,7 @@ use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\UserBooksController;
 use App\Http\Controllers\UserRequestController;
+use App\Http\Controllers\RequestController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,6 +35,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['locale', 'is_admin']], func
     Route::resource('authors', AuthorController::class);
     Route::resource('categories', CategoryController::class);
     Route::resource('books', BookController::class);
+    Route::get('requests/approved={borrow_status}', [RequestController::class, 'indexRequest'])
+         ->name('user_request.index');
+    Route::get('requests/check-approved/{borrow_id}', [RequestController::class, 'approved'])->name('request.approved');
+    Route::get('requests/check-rejected/{borrow_id}', [RequestController::class, 'rejected'])->name('request.rejected');
+    Route::resource('requests', RequestController::class)->only('destroy');
 });
 
 Route::group(['middleware' => 'locale'], function () {

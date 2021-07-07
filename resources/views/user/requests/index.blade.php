@@ -24,11 +24,11 @@
         <td>{{ $borrow->book_title }}</td>
         <td>
             @if($borrow->borrow_status == config('app.unapproved'))
-                {{ trans('user.request.nonapproved') }}
+              <p class="text-warning font-weight-bold"><i class="fas fa-times"></i> {{ trans('user.request.nonapproved') }}</p>
             @elseif($borrow->borrow_status == config('app.approved'))
-                {{ trans('user.request.approved') }}
+              <p class="text-success font-weight-bold"><i class="fas fa-check-circle"></i> {{ trans('user.request.approved') }}</p>
             @else
-                {{ trans('user.request.rejected') }}
+              <p class="text-danger font-weight-bold"><i class="fas fa-ban"></i> {{ trans('user.request.rejected') }}<p>
             @endif
         </td>
         <td>{{date('d-m-Y', strtotime($borrow->borrow_date))}}</td>

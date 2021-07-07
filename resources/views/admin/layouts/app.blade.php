@@ -138,12 +138,13 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                         <span>{{ trans('message.borrows_management') }}</span>
                     </a>
                     <ul class="sub">
-						<li><a href="#">{{ trans('message.all') }}</a></li>
-						<li><a href="#">{{ trans('message.approved') }}</a></li>
-                        <li><a href="#">{{ trans('message.non_approved') }}</a></li>
+						<li><a href="{{ route('user_request.index', ['borrow_status' => config('app.both')]) }}">{{ trans('message.all') }}</a></li>
+						<li><a href="{{ route('user_request.index', ['borrow_status' => config('app.approved')]) }}">{{ trans('message.approved') }}</a></li>
+                        <li><a href="{{ route('user_request.index', ['borrow_status' => config('app.unapproved')]) }}">{{ trans('message.non_approved') }}</a></li>
+                        <li><a href="{{ route('user_request.index', ['borrow_status' => config('app.rejected')]) }}">{{ trans('message.reject') }}</a></li>
                     </ul>
                 </li>
-            </ul>            
+            </ul>
         </div>
         <!-- sidebar menu end-->
     </div>

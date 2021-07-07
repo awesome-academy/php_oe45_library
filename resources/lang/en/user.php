@@ -28,5 +28,6 @@ return [
         'approved' => 'Approved',
         'rejected' => 'Rejected',
         'create_success' => 'Created Successfully!',
+        'reject' => 'REJECT',
     ],
 ];
