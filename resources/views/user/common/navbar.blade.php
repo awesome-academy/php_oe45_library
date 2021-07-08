@@ -3,7 +3,7 @@
       <a class="nav-link" href="{{ route('user.books') }}">{{ trans('user.books.allbooks') }}</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="{{ route('request.index') }}">{{ trans('user.books.borrows') }}</a>
+      <a class="nav-link" href="{{ route('request.index', Auth::id()) }}">{{ trans('user.books.borrows') }}</a>
     </li>
     <li class="nav-item">
       <a class="nav-link" href="#">{{ trans('user.books.booksliked') }}</a>

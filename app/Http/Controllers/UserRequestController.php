@@ -63,10 +63,11 @@ class UserRequestController extends Controller
         }
     }
 
-    public function index()
+    public function index($user_id)
     {
         $categories = Category::whereNull('parent_id')->get();
         $borrows = DB::table('borrows')
+                    ->where('user_id', $user_id)
                     ->join('books', 'books.book_id', '=', 'borrows.book_id')
                     ->paginate(config('app.paginate'));
 
