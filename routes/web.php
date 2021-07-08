@@ -49,5 +49,5 @@ Route::group(['middleware' => 'locale'], function () {
     Route::get('book-category/{id}', [UserBooksController::class, 'indexBookCategory'])->name('show_bookcategory');
     Route::get('request/create/{book_id}', [UserRequestController::class, 'create'])->name('request.create');
     Route::post('request/store', [UserRequestController::class, 'store'])->name('request.store');
-    Route::get('request', [UserRequestController::class, 'index'])->name('request.index');
+    Route::get('request/user-id={user_id}', [UserRequestController::class, 'index'])->name('request.index');
 });
