@@ -28,5 +28,6 @@ return [
         'approved' => 'Đã được duyệt',
         'rejected' => 'Bị từ chối',
         'create_success' => 'Tạo yêu cầu thành công!',
+        'reject' => 'TỪ CHỐI',
     ],
 ];
