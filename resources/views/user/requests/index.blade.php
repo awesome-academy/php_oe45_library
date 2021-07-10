@@ -21,7 +21,7 @@
       @foreach($borrows as $key => $borrow)
       <tr>
         <th>{{ $key+1 }}</th>
-        <td>{{ $borrow->book_title }}</td>
+        <td>{{ $borrow->book->book_title }}</td>
         <td>
             @if($borrow->borrow_status == config('app.unapproved'))
               <p class="text-warning font-weight-bold"><i class="fas fa-times"></i> {{ trans('user.request.nonapproved') }}</p>

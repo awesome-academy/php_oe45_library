@@ -27,10 +27,7 @@ class UserBooksController extends Controller
     {
         $categories = Category::whereNull('parent_id')->get();
 
-        $books = DB::table('books')
-                ->join('authors', 'authors.author_id', '=', 'books.author_id')
-                ->join('publishers', 'publishers.pub_id', '=', 'books.pub_id')
-                ->paginate(config('app.quantitybooks'));
+        $books = Book::with(['author', 'publisher', 'category'])->paginate(config('app.quantitybooks'));
 
         return view('user.books.index', compact(['books', 'categories']));
     }
@@ -48,12 +45,12 @@ class UserBooksController extends Controller
     public function indexBookCategory($cate_id)
     {
         $categories = Category::whereNull('parent_id')->get();
-        $category_name = DB::table('categories')->where('categories.cate_id', $cate_id)->limit(1)->get();
 
-        $books = DB::table('books')
-            ->join('categories', 'categories.cate_id', '=', 'books.cate_id')
-            ->where('categories.cate_id', $cate_id)
-            ->paginate(config('app.quantitybooks'));
+        $category_name = Category::where('cate_id', $cate_id)->take(1)->get();
+
+        $books = Book::with('category')
+                 ->where('cate_id', $cate_id)
+                 ->paginate(config('app.quantitybooks'));
 
         return view('user.books.book_category', compact('books', 'categories', 'category_name'));
     }

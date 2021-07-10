@@ -33,10 +33,7 @@ class BookController extends Controller
      */
     public function index()
     {
-        $books = DB::table('books')
-                ->join('authors', 'authors.author_id', '=', 'books.author_id')
-                ->join('publishers', 'publishers.pub_id', '=', 'books.pub_id')
-                ->paginate(config('app.paginate'));
+        $books = Book::with(['author', 'publisher', 'category'])->paginate(config('app.paginate'));
 
         return view('admin.books.index', compact('books'));
     }

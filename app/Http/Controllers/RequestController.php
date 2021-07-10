@@ -14,22 +14,17 @@ class RequestController extends Controller
         $categories = Category::whereNull('parent_id')->get();
 
         if ($borrow_status == config('app.unapproved') || $borrow_status == config('app.approved')) {
-            $borrows = DB::table('borrows')
-                    ->where('borrow_status', $borrow_status)
-                    ->join('books', 'books.book_id', '=', 'borrows.book_id')
-                    ->join('users', 'users.user_id', '=', 'borrows.user_id')
-                    ->paginate(config('app.paginate'));
+            $borrows = Borrow::with(['book', 'user'])
+                       ->where('borrow_status', $borrow_status)
+                       ->paginate(config('app.paginate'));
         } elseif ($borrow_status == config('app.rejected')) {
-            $borrows = DB::table('borrows')
-                    ->where('borrow_status', $borrow_status)
-                    ->join('books', 'books.book_id', '=', 'borrows.book_id')
-                    ->join('users', 'users.user_id', '=', 'borrows.user_id')
-                    ->paginate(config('app.paginate'));
+            $borrows = Borrow::with(['book', 'user'])
+                       ->where('borrow_status', $borrow_status)
+                       ->paginate(config('app.paginate'));
         } else {
-            $borrows = DB::table('borrows')
-                    ->join('books', 'books.book_id', '=', 'borrows.book_id')
-                    ->join('users', 'users.user_id', '=', 'borrows.user_id')
-                    ->paginate(config('app.paginate'));
+            $borrows = Borrow::with(['book', 'user'])
+                       ->where('borrow_status', $borrow_status)
+                       ->paginate(config('app.paginate'));
         }
 
         return view('admin.requests.index', compact(['categories', 'borrows']));
