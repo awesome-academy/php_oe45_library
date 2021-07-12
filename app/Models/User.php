@@ -59,7 +59,7 @@ class User extends Authenticatable
 
     public function bookfollows()
     {
-        return $this->hasMany(Bookfollow::class, 'book_id');
+        return $this->hasMany(Bookfollow::class, 'user_id');
     }
 
     public function borrows()
