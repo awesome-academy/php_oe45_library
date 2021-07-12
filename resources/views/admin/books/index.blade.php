@@ -54,8 +54,8 @@
             <img src="{{ asset('images/'.$book->book_img) }}">
           </td>
           <td>{{ $book->quantity }}</td>
-          <td>{{ $book->author_name }}</td>
-          <td>{{ $book->pub_name }}</td>
+          <td>{{ $book->author->author_name }}</td>
+          <td>{{ $book->publisher->pub_name }}</td>
           <td>
             <form action="{{ route('books.destroy', $book->book_id) }}" method="post">
               <div class="input-group">

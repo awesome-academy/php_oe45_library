@@ -48,9 +48,9 @@
       @foreach($borrows as $key => $borrow)
         <tr>
           <th scope="row">{{ $key+1 }}</th>
-          <td>{{ $borrow->name }}</td>
-          <td>{{ $borrow->email }}</td>
-          <td>{{ $borrow->book_title }}</td>
+          <td>{{ $borrow->user->name }}</td>
+          <td>{{ $borrow->user->email }}</td>
+          <td>{{ $borrow->book->book_title }}</td>
           <td>{{date('d-m-Y', strtotime($borrow->borrow_date))}}</td>
           <td>{{date('d-m-Y', strtotime($borrow->return_date))}}</td>
           <td>
