@@ -9,6 +9,7 @@ use App\Http\Controllers\BookController;
 use App\Http\Controllers\UserBooksController;
 use App\Http\Controllers\UserRequestController;
 use App\Http\Controllers\RequestController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,6 +41,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['locale', 'is_admin']], func
     Route::get('requests/check-approved/{borrow_id}', [RequestController::class, 'approved'])->name('request.approved');
     Route::get('requests/check-rejected/{borrow_id}', [RequestController::class, 'rejected'])->name('request.rejected');
     Route::resource('requests', RequestController::class)->only('destroy');
+    Route::resource('users', UserController::class);
 });
 
 Route::group(['middleware' => 'locale'], function () {

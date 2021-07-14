@@ -72,4 +72,5 @@ return [
     'approved_success' => 'Cho phép thành công!',
     'unapproved_success' => 'Không cho phép thành công!',
     'rejected_success' => 'Từ chối thành công!',
+    'role' => 'Vai trò',
 ];

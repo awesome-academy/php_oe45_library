@@ -23,7 +23,6 @@ class RequestController extends Controller
                        ->paginate(config('app.paginate'));
         } else {
             $borrows = Borrow::with(['book', 'user'])
-                       ->where('borrow_status', $borrow_status)
                        ->paginate(config('app.paginate'));
         }
 

@@ -127,7 +127,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                     </a>
                 </li>
                 <li class="sub-menu">
-                    <a href="#">
+                    <a href="{{ route('users.index') }}">
                         <i class="fas fa-user"></i>
                         <span>{{ trans('message.users') }}</span>
                     </a>

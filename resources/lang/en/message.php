@@ -72,4 +72,5 @@ return [
     'approved_success' => 'Approved Successfully!',
     'unapproved_success' => 'Unapproved Successfully!',
     'rejected_success' => 'Rejected Successfully!',
+    'role' => 'Role',
 ];
