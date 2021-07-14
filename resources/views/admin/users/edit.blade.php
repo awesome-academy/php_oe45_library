@@ -16,22 +16,33 @@
                             <h3 class="card-title">{{ trans('message.edit_user') }}</h3>
                         </div>
 
-                        <form method="POST" action="">
+                        <form action="{{ route('users.update', $user->user_id) }}" method="POST" enctype="multipart/form-data">
                             @csrf
+                            @method('PUT')
                             <div class="card-body">
                                 <div class="form-group">
                                     <label>{{ trans('message.name') }}</label>
-                                    <input type="text" class="form-control" name="name" value="">
+                                    <input type="text" class="form-control" name="name"
+                                        placeholder="{{ trans('message.input_name_of_user') }}" value="{{ $user->name }}">
                                 </div>
 
                                 <div class="form-group">
                                     <label>{{ trans('message.email') }}</label>
-                                    <input type="email" class="form-control" name="email" value="">
+                                    <input type="email" class="form-control" name="email"
+                                        placeholder="{{ trans('message.input_email_of_user') }}" value="{{ $user->email }}">
                                 </div>
 
                                 <div class="form-group">
-                                    <label>{{ trans('message.password') }}</label>
-                                    <input type="password" class="form-control" name="password" value="">
+                                    <label>{{ trans('message.role') }}</label>
+                                    <select class="form-control select2" name="role_id">
+                                        @if($user->role_id == config('app.role'))
+                                            <option selected value="{{ config('app.role') }}">{{ trans('message.admin') }}</option>
+                                            <option>{{ trans('message.user') }}</option>
+                                        @else
+                                            <option value="{{ config('app.role') }}">{{ trans('message.admin') }}</option>
+                                            <option selected>{{ trans('message.user') }}</option>
+                                        @endif
+                                    </select>
                                 </div>
                             </div>
 
