@@ -1,11 +1,13 @@
 {
     "/js/app.js": "/js/app.js",
     "/js/jquery.dcjqaccordion.2.7.js": "/js/jquery.dcjqaccordion.2.7.js",
-    "/js/jquery.nicescroll.js": "/js/jquery.nicescroll.js",
     "/js/jquery.slimscroll.js": "/js/jquery.slimscroll.js",
+    "/js/scripts.js": "/js/scripts.js",
+    "/js/pusher.js": "/js/pusher.js",
+    "/css/app.css": "/css/app.css",
+    "/css/noti.css": "/css/noti.css",
+    "/js/jquery.nicescroll.js": "/js/jquery.nicescroll.js",
     "/js/jquery2.0.3.min.js": "/js/jquery2.0.3.min.js",
     "/js/morris.js": "/js/morris.js",
-    "/js/raphael-min.js": "/js/raphael-min.js",
-    "/js/scripts.js": "/js/scripts.js",
-    "/css/app.css": "/css/app.css"
+    "/js/raphael-min.js": "/js/raphael-min.js"
 }

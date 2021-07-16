@@ -14,11 +14,14 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <link rel="stylesheet" href="{{ asset('css/morris.css') }}" type="text/css"/>
 <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 <link href="{{ asset('css/jsgrid.css') }}" rel="stylesheet">
+<link rel="stylesheet" href="{{ asset('css/noti.css') }}">
 
 <script src="{{ asset('js/app.js') }}" defer></script>
 <script src="{{ mix('js/jquery2.0.3.min.js') }}"></script>
 <script src="{{ mix('js/raphael-min.js') }}"></script>
 <script src="{{ mix('js/morris.js') }}"></script>
+<script src="{{ mix('js/pusher.js') }}"></script>
+<script type="text/javascript" src="{{asset('js/ajax.js')}}"></script>
 
 </head>
 <body>
@@ -74,6 +77,28 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                             </li>
                         @endif
                     @else
+                    <li class="nav-item dropdown dropdown-notifications">
+                        <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                            <i class="fas fa-bell notification-icon"></i>
+                            <span class="badge badge-light" id="count-notification">{{Auth::user()->unreadNotifications->count()}}</span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right menu-notification" aria-labelledby="navbarDropdown">
+                            <div class="menu-body">
+                                @for ($i = 0; $i < config('app.limit_notifications'); $i++)
+                                     @if (isset(Auth::user()->notifications[$i]))
+                                        <a class="dropdown-item card notification-item" href="{{Auth::user()->notifications[$i]->data['link']}}">
+                                            <h5 class="card-title">{{Auth::user()->notifications[$i]->data['title']}}</h5>
+                                             <p class="card-text">{{Auth::user()->notifications[$i]->data['content']}}</p>
+                                            <p class="card-text">{{Auth::user()->notifications[$i]->data['time']}}</p> 
+                                        </a>
+                                    @endif
+                                @endfor 
+                            </div>
+                            <a type="button" class="dropdown-item text-center bg-info" id="all" data-toggle="modal" data-target="#myModal">
+                                <p class="card-text all-text" >{{ trans('message.viewall') }}</p>
+                            </a>
+                        </div>
+                    </li>
                         <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                 {{ Auth::user()->name }}
@@ -96,6 +121,31 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
             </div>
         </div>
     </nav>
+    <div class="modal" id="myModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                   <h4 class="modal-title">{{ trans('message.allnoti') }}</h4>
+                   <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <!-- Modal body -->
+                <div class="modal-body">
+                @foreach (Auth::user()->notifications as $noti)
+                    <a class="dropdown-item notification-item card mb-2" href="{{$noti->data['link']}}">
+                        <h5 class="card-title">{{$noti->data['title']}}</h5>
+                        <p class="card-text">{{$noti->data['content']}}</p>
+                        <p class="card-text">{{$noti->data['time']}}</p> 
+                    </a>
+                @endforeach
+                </div>
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">{{ trans('message.close') }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </header>
 <!--header end-->
 <!--sidebar start-->
@@ -114,6 +164,41 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 </section>
 <!--main content end-->
 </section>
+
+<script type="text/javascript">
+    var pusher = new Pusher('{{ env('PUSHER_APP_KEY') }}', {
+    encrypted: true,
+    cluster: "ap1",
+    });
+    var channel = pusher.subscribe("NotificationEvent");
+    channel.bind("send-message-user", function (data) {
+        var newNotificationHtml = `
+        <a class="dropdown-item card" href="${data.link}">
+            <h5 class="card-title">${data.title}</h5>
+            <p class="card-text">${data.content}</p>
+            <p class="card-text">${data.time}</p>
+        </a>
+        `;
+        $(".menu-body").prepend(newNotificationHtml);
+        $(".modal-body").prepend(newNotificationHtml);
+        count = count + 1;
+        document.getElementById("count-notification").innerHTML = count;
+    });
+
+    var count = {{ Auth::user()->unreadNotifications->count() }};
+
+    $("#navbarDropdown").click(function () {
+        count = 0;
+        document.getElementById("count-notification").innerHTML = count;
+        var _token = $('input[name="_token"]').val();
+        $.ajax({
+            url: "/notification",
+            method: "POST",
+            data: { _token: _token },
+            success: function (data) {},
+        });
+    });
+</script>
 
 <script src="{{ mix('js/jquery.dcjqaccordion.2.7.js') }}"></script>
 <script src="{{ mix('js/scripts.js') }}"></script>

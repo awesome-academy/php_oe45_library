@@ -10,6 +10,7 @@ use App\Http\Controllers\UserBooksController;
 use App\Http\Controllers\UserRequestController;
 use App\Http\Controllers\RequestController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\NotificationsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,6 +43,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['locale', 'is_admin']], func
     Route::get('requests/check-rejected/{borrow_id}', [RequestController::class, 'rejected'])->name('request.rejected');
     Route::resource('requests', RequestController::class)->only('destroy');
     Route::resource('users', UserController::class);
+    Route::get('request/{id}', [RequestController::class, 'showone'])->name('requests.showone');
 });
 
 Route::group(['middleware' => 'locale'], function () {
@@ -52,4 +54,7 @@ Route::group(['middleware' => 'locale'], function () {
     Route::get('request/create/{book_id}', [UserRequestController::class, 'create'])->name('request.create');
     Route::post('request/store', [UserRequestController::class, 'store'])->name('request.store');
     Route::get('request/user-id={user_id}', [UserRequestController::class, 'index'])->name('request.index');
+    Route::get('request/{id}', [UserRequestController::class, 'showone'])->name('request.showone');
 });
+
+Route::post('notification', [NotificationsController::class, 'read'])->name('notifications.read');

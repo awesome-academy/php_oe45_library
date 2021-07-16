@@ -9,6 +9,7 @@ return [
     'approved' => 1,
     'rejected' => 2,
     'both' => 3,
+    'limit_notifications' => 5,
 
     /*
     |--------------------------------------------------------------------------
@@ -179,7 +180,7 @@ return [
          */
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
-        // App\Providers\BroadcastServiceProvider::class,
+        App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
