@@ -5,9 +5,15 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Author;
 use App\Http\Requests\AuthorRequest;
+use App\Repositories\RepositoryInterface\AuthorRepositoryInterface;
 
 class AuthorController extends Controller
 {
+    public function __construct(AuthorRepositoryInterface $authorRepository)
+    {
+        $this->authorRepository = $authorRepository;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +21,7 @@ class AuthorController extends Controller
      */
     public function index()
     {
-        $authors = Author::latest()->paginate(config('app.paginate'));
+        $authors = $this->authorRepository->getLatest();
 
         return view('admin.authors.index', compact('authors'));
     }
@@ -38,7 +44,7 @@ class AuthorController extends Controller
      */
     public function store(AuthorRequest $request)
     {
-        Author::create($request->all());
+        $this->authorRepository->create($request->all());
 
         return redirect()->route('authors.index')->with('add_success', trans('message.add_success'));
     }
@@ -49,8 +55,10 @@ class AuthorController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Author $author)
+    public function edit($author_id)
     {
+        $author = $this->authorRepository->find($author_id);
+
         return view('admin.authors.edit', compact('author'));
     }
 
@@ -61,9 +69,9 @@ class AuthorController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(AuthorRequest $request, Author $author)
+    public function update(AuthorRequest $request, $author_id)
     {
-        $author->update($request->all());
+        $this->authorRepository->update($author_id, $request->all());
 
         return redirect()->route('authors.index')->with('update_success', trans('message.update_success'));
     }
@@ -74,9 +82,9 @@ class AuthorController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Author $author)
+    public function destroy($author_id)
     {
-        $author->delete();
+        $this->authorRepository->delete($author_id);
 
         return redirect()->route('authors.index')->with('del_success', trans('message.del_success'));
     }
