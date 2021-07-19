@@ -8,9 +8,12 @@ use App\Models\Borrow;
 use App\Models\Category;
 use App\Models\Author;
 use App\Models\Publisher;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\CreateBorrowRequest;
+use App\Notifications\BorrowNotification;
 use DB;
+use Pusher\Pusher;
 
 class UserRequestController extends Controller
 {
@@ -43,10 +46,10 @@ class UserRequestController extends Controller
     public function store(CreateBorrowRequest $request)
     {
         $request->all();
-        $same_request = (new Borrow)->where([['book_id', $request->book], ['user_id', Auth::id()]])->first();
-
+        $same_request = (new Borrow)->where([['book_id', $request->book_id], ['user_id', Auth::id()]])->first();
+        $book = Book::where('book_id', $request->book_id)->first();
         if ($same_request) {
-            return redirect()->route('request.index')->with('error', trans('requests.error'));
+            return redirect()->route('request.index', Auth::id())->with('error', trans('requests.error'));
         } else {
             $request = Borrow::create([
                 'book_id' => $request->book_id,
@@ -56,10 +59,50 @@ class UserRequestController extends Controller
                 'book_status' => 0,
             ]);
             if ($request) {
-                return redirect()->route('request.index')->with('create_success', trans('user.request.create_success'));
+                $users = (new User)->where('role_id', config('app.role'))->get();
+                
+                $data = [
+                    'user' => Auth::user()->name,
+                    'content' => Auth::user()->name.' want to borrow '.$book->book_title,
+                    'time' => date("d-m-Y H:i:s"),
+                    'title' => 'BORROW REQUEST',
+                    'link' => route('requests.showone', $request->borrow_id),
+                ];
+                foreach ($users as $user) {
+                    $user->notify(new BorrowNotification($data));
+                }
+                $options = array(
+                    'cluster' => 'ap1',
+                    'encrypted' => true
+                );
+
+                $pusher = new Pusher(
+                    env('PUSHER_APP_KEY'),
+                    env('PUSHER_APP_SECRET'),
+                    env('PUSHER_APP_ID'),
+                    $options
+                );
+
+                $pusher->trigger('NotificationEvent', 'send-message', $data);
+
+                return redirect()->route('request.index', Auth::id())
+                        ->with('create_success', trans('user.request.create_success'));
             } else {
-                return redirect()->route('request.index')->with('error', trans('request.fail'));
+                return redirect()->route('request.index', Auth::id())
+                        ->with('error', trans('request.fail'));
             }
+        }
+    }
+
+    public function showone($id)
+    {
+        $categories = Category::whereNull('parent_id')->get();
+
+        $borrow = Borrow::find($id);
+        if ($borrow) {
+            return view('user.requests.showone', compact(['categories', 'borrow']));
+        } else {
+            return abort(404);
         }
     }
 
@@ -69,6 +112,7 @@ class UserRequestController extends Controller
 
         $borrows = Borrow::with(['user', 'book'])
                    ->where('user_id', $user_id)
+                   ->latest()
                    ->paginate(config('app.paginate'));
 
         return view('user.requests.index', compact(['categories', 'borrows']));
