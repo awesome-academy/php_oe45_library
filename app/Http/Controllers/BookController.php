@@ -10,20 +10,28 @@ use App\Models\Publisher;
 use App\Http\Requests\BookRequest;
 use App\Components\Recusive;
 use DB;
+use App\Repositories\RepositoryInterface\BookRepositoryInterface;
+use App\Repositories\RepositoryInterface\AuthorRepositoryInterface;
+use App\Repositories\RepositoryInterface\PublisherRepositoryInterface;
+use App\Repositories\RepositoryInterface\CategoryRepositoryInterface;
 
 class BookController extends Controller
 {
-    private $book;
-    private $category;
-    private $author;
-    private $publisher;
+    private $bookRepository;
+    private $categoryRepository;
+    private $authorRepository;
+    private $publisherRepository;
     
-    public function __construct(Book $book, Category $category, Author $author, Publisher $publisher)
-    {
-        $this->book = $book;
-        $this->category = $category;
-        $this->author = $author;
-        $this->publisher = $publisher;
+    public function __construct(
+        BookRepositoryInterface $bookRepository,
+        CategoryRepositoryInterface $categoryRepository,
+        AuthorRepositoryInterface $authorRepository,
+        PublisherRepositoryInterface $publisherRepository
+    ) {
+        $this->bookRepository = $bookRepository;
+        $this->categoryRepository = $categoryRepository;
+        $this->authorRepository = $authorRepository;
+        $this->publisherRepository = $publisherRepository;
     }
         
     /**
@@ -33,14 +41,14 @@ class BookController extends Controller
      */
     public function index()
     {
-        $books = Book::with(['author', 'publisher', 'category'])->paginate(config('app.paginate'));
+        $books = $this->bookRepository->getAllBooks();
 
         return view('admin.books.index', compact('books'));
     }
 
     public function getCategory($parentID)
     {
-        $data = $this->category->all();
+        $data = $this->categoryRepository->getAll();
         $recusive = new Recusive($data);
         $categoryOption = $recusive->categoryRecusive($parentID);
 
@@ -55,8 +63,8 @@ class BookController extends Controller
     public function create()
     {
         $categoryOption = $this->getCategory('');
-        $authors = $this->author->all();
-        $publishers = $this->publisher->all();
+        $authors = $this->authorRepository->getAll();
+        $publishers = $this->publisherRepository->getAll();
 
         return view('admin.books.add', compact(['categoryOption', 'authors', 'publishers']));
     }
@@ -77,7 +85,7 @@ class BookController extends Controller
             $books['book_img'] = $name_image;
         }
 
-        Book::create($books);
+        $this->bookRepository->create($books);
 
         return redirect()->route('books.index')->with('add_success', trans('message.add_success'));
     }
@@ -88,11 +96,12 @@ class BookController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Book $book)
+    public function edit($book_id)
     {
+        $book = $this->bookRepository->find($book_id);
         $categoryOption = $this->getCategory($book->cate_id);
-        $authors = $this->author->all();
-        $publishers = $this->publisher->all();
+        $authors = $this->authorRepository->getAll();
+        $publishers = $this->publisherRepository->getAll();
 
         return view('admin.books.edit', compact(['book', 'categoryOption', 'authors', 'publishers']));
     }
@@ -104,7 +113,7 @@ class BookController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(BookRequest $request, Book $book)
+    public function update(BookRequest $request, $book_id)
     {
         $bookUpdate = $request->all();
 
@@ -114,7 +123,7 @@ class BookController extends Controller
             $bookUpdate['book_img'] = $name_image;
         }
 
-        $book->update($bookUpdate);
+        $this->bookRepository->update($book_id, $bookUpdate);
 
         return redirect()->route('books.index')->with('update_success', trans('message.update_success'));
     }
@@ -125,9 +134,9 @@ class BookController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Book $book)
+    public function destroy($book_id)
     {
-        $book->delete();
+        $this->bookRepository->delete($book_id);
 
         return redirect()->route('books.index')->with('del_success', trans('message.del_success'));
     }

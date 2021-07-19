@@ -5,9 +5,15 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Publisher;
 use App\Http\Requests\PublisherRequest;
+use App\Repositories\RepositoryInterface\PublisherRepositoryInterface;
 
 class PublisherController extends Controller
 {
+    public function __construct(PublisherRepositoryInterface $publisherRepository)
+    {
+        $this->publisherRepository = $publisherRepository;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +21,7 @@ class PublisherController extends Controller
      */
     public function index()
     {
-        $publishers = Publisher::latest()->paginate(config('app.paginate'));
+        $publishers = $this->publisherRepository->getLatest();
 
         return view('admin.publishers.index', compact('publishers'));
     }
@@ -38,7 +44,7 @@ class PublisherController extends Controller
      */
     public function store(PublisherRequest $request)
     {
-        Publisher::create($request->all());
+        $this->publisherRepository->create($request->all());
 
         return redirect()->route('publishers.index')->with('add_success', trans('message.add_success'));
     }
@@ -49,8 +55,10 @@ class PublisherController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Publisher $publisher)
+    public function edit($pub_id)
     {
+        $publisher = $this->publisherRepository->find($pub_id);
+
         return view('admin.publishers.edit', compact('publisher'));
     }
 
@@ -61,9 +69,9 @@ class PublisherController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(PublisherRequest $request, Publisher $publisher)
+    public function update(PublisherRequest $request, $pub_id)
     {
-        $publisher->update($request->all());
+        $this->publisherRepository->update($pub_id, $request->all());
 
         return redirect()->route('publishers.index')->with('update_success', trans('message.update_success'));
     }
@@ -74,9 +82,9 @@ class PublisherController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Publisher $publisher)
+    public function destroy($pub_id)
     {
-        $publisher->delete();
+        $this->publisherRepository->delete($pub_id);
 
         return redirect()->route('publishers.index')->with('del_success', trans('message.del_success'));
     }

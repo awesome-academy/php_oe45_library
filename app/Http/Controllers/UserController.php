@@ -4,9 +4,15 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Repositories\RepositoryInterface\UserRepositoryInterface;
 
 class UserController extends Controller
 {
+    public function __construct(UserRepositoryInterface $userRepository)
+    {
+        $this->userRepository = $userRepository;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +20,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::latest()->paginate(config('app.paginate'));
+        $users = $this->userRepository->getLatest();
 
         return view('admin.users.index', compact('users'));
     }
@@ -25,8 +31,10 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(User $user)
+    public function edit($user_id)
     {
+        $user = $this->userRepository->find($user_id);
+
         return view('admin.users.edit', compact('user'));
     }
 
@@ -37,9 +45,9 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request, $user_id)
     {
-        $user->update($request->all());
+        $this->userRepository->update($user_id, $request->all());
 
         return redirect()->route('users.index')->with('update_success', trans('message.update_success'));
     }
@@ -50,9 +58,9 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)
+    public function destroy($user_id)
     {
-        $user->delete();
+        $this->userRepository->delete($user_id);
 
         return redirect()->route('users.index')->with('del_success', trans('message.del_success'));
     }

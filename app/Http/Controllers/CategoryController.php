@@ -6,14 +6,15 @@ use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Components\Recusive;
 use App\Http\Requests\CategoryRequest;
+use App\Repositories\RepositoryInterface\CategoryRepositoryInterface;
 
 class CategoryController extends Controller
 {
-    private $category;
-    
-    public function __construct(Category $category)
+    private $categoryRepository;
+
+    public function __construct(CategoryRepositoryInterface $categoryRepository)
     {
-        $this->category = $category;
+        $this->categoryRepository = $categoryRepository;
     }
         
     /**
@@ -23,7 +24,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::latest()->paginate(config('app.paginate'));
+        $categories = $this->categoryRepository->getLatest();
 
         return view('admin.categories.index', compact('categories'));
     }
@@ -36,7 +37,7 @@ class CategoryController extends Controller
 
     public function getCategory($parentID)
     {
-        $data = $this->category->all();
+        $data = $this->categoryRepository->getAll();
         $recusive = new Recusive($data);
         $htmlOption = $recusive->categoryRecusive($parentID);
 
@@ -58,7 +59,7 @@ class CategoryController extends Controller
      */
     public function store(CategoryRequest $request)
     {
-        Category::create($request->all());
+        $this->categoryRepository->create($request->all());
 
         return redirect()->route('categories.index')->with('add_success', trans('message.add_success'));
     }
@@ -69,8 +70,9 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Category $category)
+    public function edit($cate_id)
     {
+        $category = $this->categoryRepository->find($cate_id);
         $htmlOption = $this->getCategory($category->parent_id);
 
         return view('admin.categories.edit', compact('category', 'htmlOption'));
@@ -83,9 +85,9 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(CategoryRequest $request, Category $category)
+    public function update(CategoryRequest $request, $cate_id)
     {
-        $category->update($request->all());
+        $this->categoryRepository->update($cate_id, $request->all());
 
         return redirect()->route('categories.index')->with('update_success', trans('message.update_success'));
     }
@@ -96,9 +98,9 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Category $category)
+    public function destroy($cate_id)
     {
-        $category->delete();
+        $this->categoryRepository->delete($cate_id);
 
         return redirect()->route('categories.index')->with('del_success', trans('message.del_success'));
     }
