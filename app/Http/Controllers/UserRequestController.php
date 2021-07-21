@@ -14,28 +14,40 @@ use App\Http\Requests\CreateBorrowRequest;
 use App\Notifications\BorrowNotification;
 use DB;
 use Pusher\Pusher;
+use App\Repositories\RepositoryInterface\BookRepositoryInterface;
+use App\Repositories\RepositoryInterface\AuthorRepositoryInterface;
+use App\Repositories\RepositoryInterface\PublisherRepositoryInterface;
+use App\Repositories\RepositoryInterface\CategoryRepositoryInterface;
+use App\Repositories\RepositoryInterface\BorrowRepositoryInterface;
 
 class UserRequestController extends Controller
 {
-    private $book;
-    private $author;
-    private $publisher;
-    private $category;
-
-    public function __construct(Book $book, Author $author, Publisher $publisher, Category $category)
-    {
-        $this->book = $book;
-        $this->author = $author;
-        $this->publisher = $publisher;
-        $this->category = $category;
+    private $bookRepository;
+    private $categoryRepository;
+    private $authorRepository;
+    private $publisherRepository;
+    private $borrowRepository;
+    
+    public function __construct(
+        BookRepositoryInterface $bookRepository,
+        CategoryRepositoryInterface $categoryRepository,
+        AuthorRepositoryInterface $authorRepository,
+        PublisherRepositoryInterface $publisherRepository,
+        BorrowRepositoryInterface $borrowRepository
+    ) {
+        $this->bookRepository = $bookRepository;
+        $this->categoryRepository = $categoryRepository;
+        $this->authorRepository = $authorRepository;
+        $this->publisherRepository = $publisherRepository;
+        $this->borrowRepository = $borrowRepository;
     }
 
     public function create($id)
     {
-        $categories = Category::whereNull('parent_id')->get();
-        $authors = $this->author->all();
-        $publishers = $this->publisher->all();
-        $book = $this->book->find($id);
+        $categories = $this->categoryRepository->getCateParent();
+        $authors = $this->authorRepository->getAll();
+        $publishers = $this->publisherRepository->getAll();
+        $book = $this->bookRepository->find($id);
         if (!$book) {
             return abort(404);
         } else {
@@ -46,8 +58,8 @@ class UserRequestController extends Controller
     public function store(CreateBorrowRequest $request)
     {
         $request->all();
-        $same_request = (new Borrow)->where([['book_id', $request->book_id], ['user_id', Auth::id()]])->first();
-        $book = Book::where('book_id', $request->book_id)->first();
+        $same_request = $this->borrowRepository->getSameBorrow($request->book_id);
+        $book = $this->bookRepository->getBookRequestBorrow($request->book_id);
         if ($same_request) {
             return redirect()->route('request.index', Auth::id())->with('error', trans('requests.error'));
         } else {
@@ -96,9 +108,9 @@ class UserRequestController extends Controller
 
     public function showone($id)
     {
-        $categories = Category::whereNull('parent_id')->get();
+        $categories = $this->categoryRepository->getCateParent();
 
-        $borrow = Borrow::find($id);
+        $borrow = $this->borrowRepository->find($id);
         if ($borrow) {
             return view('user.requests.showone', compact(['categories', 'borrow']));
         } else {
@@ -108,12 +120,8 @@ class UserRequestController extends Controller
 
     public function index($user_id)
     {
-        $categories = Category::whereNull('parent_id')->get();
-
-        $borrows = Borrow::with(['user', 'book'])
-                   ->where('user_id', $user_id)
-                   ->latest()
-                   ->paginate(config('app.paginate'));
+        $categories = $this->categoryRepository->getCateParent();
+        $borrows = $this->borrowRepository->getBorrowsByUsers($user_id);
 
         return view('user.requests.index', compact(['categories', 'borrows']));
     }
