@@ -9,5 +9,6 @@
     "/js/jquery.nicescroll.js": "/js/jquery.nicescroll.js",
     "/js/jquery2.0.3.min.js": "/js/jquery2.0.3.min.js",
     "/js/morris.js": "/js/morris.js",
-    "/js/raphael-min.js": "/js/raphael-min.js"
+    "/js/raphael-min.js": "/js/raphael-min.js",
+    "/js/chart.min.js": "/js/chart.min.js"
 }

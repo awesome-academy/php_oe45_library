@@ -151,7 +151,13 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     <div id="sidebar" class="nav-collapse">
         <!-- sidebar menu start-->
         <div class="leftside-navigation">
-            <ul class="sidebar-menu" id="nav-accordion">                
+            <ul class="sidebar-menu" id="nav-accordion">
+                <li class="sub-menu">
+                    <a href="{{ route('charts.index') }}">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>{{ trans('message.charts') }}</span>
+                    </a>
+                </li>
                 <li class="sub-menu">
                     <a href="{{ route('categories.index') }}">
                         <i class="fas fa-align-center"></i>
@@ -205,9 +211,11 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 	<section class="wrapper">
        @yield('content')
     </section>
+       @yield('javascript')
 </section>
 <!--main content end-->
 </section>
+<script type="text/javascript" src="{{asset('js/chart.min.js')}}"></script>
 
 <script type="text/javascript">
     var pusher = new Pusher('{{ env('PUSHER_APP_KEY') }}', {

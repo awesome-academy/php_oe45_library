@@ -11,6 +11,7 @@ use App\Http\Controllers\UserRequestController;
 use App\Http\Controllers\RequestController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\NotificationsController;
+use App\Http\Controllers\ChartController;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,6 +45,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['locale', 'is_admin']], func
     Route::resource('requests', RequestController::class)->only('destroy');
     Route::resource('users', UserController::class);
     Route::get('request/{id}', [RequestController::class, 'showone'])->name('requests.showone');
+    Route::resource('charts', ChartController::class);
 });
 
 Route::group(['middleware' => 'locale'], function () {
