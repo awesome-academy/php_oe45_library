@@ -12,4 +12,14 @@ class CategoryRepository extends BaseRepository implements CategoryRepositoryInt
     {
         return Category::class;
     }
+
+    public function getCateParent()
+    {
+        return Category::whereNull('parent_id')->get();
+    }
+
+    public function getOneCateName($cate_id)
+    {
+        return Category::where('cate_id', $cate_id)->take(1)->get();
+    }
 }

@@ -10,36 +10,36 @@ use App\Notifications\BorrowNotification;
 use Illuminate\Support\Facades\Auth;
 use DB;
 use Pusher\Pusher;
+use App\Repositories\RepositoryInterface\BorrowRepositoryInterface;
+use App\Repositories\RepositoryInterface\CategoryRepositoryInterface;
 
 class RequestController extends Controller
 {
+    private $borrowRepository;
+    
+    public function __construct(
+        BorrowRepositoryInterface $borrowRepository
+    ) {
+        $this->borrowRepository = $borrowRepository;
+    }
+
     public function indexRequest($borrow_status)
     {
-        $categories = Category::whereNull('parent_id')->get();
-
         if ($borrow_status == config('app.unapproved') || $borrow_status == config('app.approved')) {
-            $borrows = Borrow::with(['book', 'user'])
-                       ->latest()
-                       ->where('borrow_status', $borrow_status)
-                       ->paginate(config('app.paginate'));
+            $borrows = $this->borrowRepository->getBorrowsByStatus($borrow_status);
         } elseif ($borrow_status == config('app.rejected')) {
-            $borrows = Borrow::with(['book', 'user'])
-                       ->latest()
-                       ->where('borrow_status', $borrow_status)
-                       ->paginate(config('app.paginate'));
+            $borrows = $this->borrowRepository->getBorrowsByStatus($borrow_status);
         } else {
-            $borrows = Borrow::with(['book', 'user'])
-                       ->latest()
-                       ->paginate(config('app.paginate'));
+            $borrows = $this->borrowRepository->getAllBorrows();
         }
 
-        return view('admin.requests.index', compact(['categories', 'borrows']));
+        return view('admin.requests.index', compact('borrows'));
     }
 
     public function approved($borrow_id)
     {
-        DB::table('borrows')->where('borrow_id', $borrow_id)->update(['borrow_status'=>config('app.approved')]);
-        $borrow = Borrow::with(['book', 'user'])->where('borrow_id', $borrow_id)->first();
+        $this->borrowRepository->approveBorrow($borrow_id);
+        $borrow = $this->borrowRepository->getBorrowWithBookUser($borrow_id);
         
         if ($borrow) {
             $user = $borrow->user;
@@ -74,9 +74,8 @@ class RequestController extends Controller
 
     public function rejected($borrow_id)
     {
-        DB::table('borrows')->where('borrow_id', $borrow_id)
-                            ->update(['borrow_status'=>config('app.rejected')]);
-        $borrow = Borrow::with(['book', 'user'])->where('borrow_id', $borrow_id)->first();
+        $this->borrowRepository->rejectBorrow($borrow_id);
+        $borrow = $this->borrowRepository->getBorrowWithBookUser($borrow_id);
 
         if ($borrow) {
             $user = $borrow->user;
@@ -111,7 +110,7 @@ class RequestController extends Controller
 
     public function showone($id)
     {
-        $borrow = Borrow::find($id);
+        $borrow = $this->borrowRepository->find($id);
         if ($borrow) {
             return view('admin.requests.showone', compact('borrow'));
         } else {
@@ -121,7 +120,7 @@ class RequestController extends Controller
 
     public function destroy($borrow_id)
     {
-        DB::table('borrows')->where('borrow_id', $borrow_id)->delete();
+        $this->borrowRepository->delete($borrow_id);
 
         return redirect()->route('user_request.index', ['borrow_status' => config('app.both')])
                          ->with('del_success', trans('message.del_success'));
