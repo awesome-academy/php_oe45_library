@@ -73,4 +73,8 @@ return [
     'unapproved_success' => 'Không cho phép thành công!',
     'rejected_success' => 'Từ chối thành công!',
     'role' => 'Vai trò',
+    'allnoti' => 'Tất cả thông báo',
+    'close' => 'Đóng',
+    'viewall' => 'Xem tất cả',
+    'charts' => 'Biểu đồ mượn',
 ];

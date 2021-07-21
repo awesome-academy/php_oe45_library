@@ -73,4 +73,8 @@ return [
     'unapproved_success' => 'Unapproved Successfully!',
     'rejected_success' => 'Rejected Successfully!',
     'role' => 'Role',
+    'allnoti' => 'All Notifications',
+    'close' => 'Close',
+    'viewall' => 'View All',
+    'charts' => 'Borrow Chart',
 ];
